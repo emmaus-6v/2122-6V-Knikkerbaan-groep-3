@@ -1,5 +1,10 @@
 # planning
-## niksdoen
-kevin, gijs
-### iets doen
-valentijn
+
+# les
+valentijn komt
+
+if (valentijnKomt === true) {
+ planMaken();
+} else {
+ lekkerChillen();
+}
