@@ -1,6 +1,6 @@
 #include <Arduino_JSON.h>
 
-KnikkerPoort poortBoven = KnikkerPoort (BOVEN_POORT_PIN, 0, 90);
+KnikkerPoort poortBoven;
 WiFiCommunicator wifi = WiFiCommunicator(WIFI_NETWERK, WIFI_WACHTWOORD, SERVER_DOMEINNAAM);
 Teller tellerA = Teller(TELLER_A_PIN);
 
@@ -9,7 +9,8 @@ unsigned long tijdVoorContactMetServer = 0;
 
 void setup() {
   Serial.begin(9600);
-
+  poortBoven = KnikkerPoort (BOVEN_POORT_PIN, 0, 90);
+  
   wifi.begin();
 
   wifi.stuurVerzoek("/api/set/nieuwerun", "");
@@ -34,7 +35,9 @@ void loop() {
     Serial.print("Er zijn nu zoveel knikkers geteld: ");
     Serial.println(tellerA.getAantal());
 
-
+    
+    // bereken de nieuwe tijd waarop er weer met de server gecommuniceerd moet worden
+    tijdVoorcontactMetServer = millis() + (unsigned long)serverContactInterval * 1000;
     // en zet nu het poortje weer open:
     poortBoven.open();
   }
