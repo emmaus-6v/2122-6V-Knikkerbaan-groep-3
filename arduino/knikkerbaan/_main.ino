@@ -9,7 +9,7 @@ unsigned long tijdVoorContactMetServer = 0;
 
 void setup() {
   Serial.begin(9600);
-  poortBoven = KnikkerPoort (BOVEN_POORT_PIN, 0, 90);
+  poortBoven.begin(BOVEN_POORT_PIN, 0, 90);
   
   wifi.begin();
 
@@ -37,7 +37,7 @@ void loop() {
 
     
     // bereken de nieuwe tijd waarop er weer met de server gecommuniceerd moet worden
-    tijdVoorcontactMetServer = millis() + (unsigned long)serverContactInterval * 1000;
+    tijdVoorContactMetServer = millis() + (unsigned long)serverContactInterval * 1000;
     // en zet nu het poortje weer open:
     poortBoven.open();
   }
