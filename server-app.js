@@ -57,19 +57,26 @@ function creeerNieuweRun(request, response) {
 // geeft laatste sensordata van de run terug 
 function getSensorData(request, response) {
   var huidigeRunID = geefHoogsteRunID();
-  var stmt = db.prepare('SELECT aantalKnikkers FROM sensorData WHERE run = ? ORDER BY stamp DESC');
-  var data = stmt.get(huidigeRunID);
-  response.status(200).send(data);
+  var stmt = db.prepare('SELECT key,value FROM sensorData WHERE run = ? ORDER BY stamp DESC');
+  var data = stmt.all(huidigeRunID);
+  // sensor data naar een leesbaar object converten, formaat:
+  // {key: value, key: value, etc..}
+  var dataLeesbaar = {};
+  data.forEach(function(obj) {
+    dataLeesbaar[obj.key] = obj.value;
+  })
+  response.status(200).send(dataLeesbaar);
 }
 
 
 // slaat doorgegeven data op in de database
 function setSensorData(request, response) {
-  var aantalNieuweKnikkers = request.query.knikkers;
+  var key = Object.keys(request.query)[0];
+  var value = request.query[key];
   var huidigeRunID = geefHoogsteRunID();
-  var SQL = `INSERT INTO sensorData (run, stamp, aantalKnikkers)
-             VALUES (?, CURRENT_TIMESTAMP, ?)`
-  db.prepare(SQL).run(huidigeRunID, aantalNieuweKnikkers);
+  var SQL = `INSERT INTO sensorData (run, stamp, key, value)
+             VALUES (?, CURRENT_TIMESTAMP, ?, ?)`;
+  db.prepare(SQL).run(huidigeRunID, key, value);
   response.status(200).send();
 }
 
