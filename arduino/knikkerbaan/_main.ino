@@ -9,7 +9,7 @@ unsigned long tijdVoorContactMetServer = 0;
 
 void setup() {
   Serial.begin(9600);
-  poortBoven.begin(BOVEN_POORT_PIN, 0, 90);
+  poortBoven.begin(BOVEN_POORT_PIN, 94, 125);
   
   wifi.begin();
 
