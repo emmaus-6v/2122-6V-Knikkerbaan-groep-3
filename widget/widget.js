@@ -7,6 +7,7 @@ var button;
 var teller;
 var wachtijdInput;
 var poort;
+var lift;
 
 
 /**
@@ -20,14 +21,15 @@ function setup() {
 
   teller = new Teller(150, 50);
   poort = new Poort();
+  lift = new Lift();
 
   poort.dicht(10).then(function() {
     poort.open(10);
   });
-  // poort.dicht(50).then(function() {
-  //   console.log("Klaar");
-  // })
 
+  lift.omhoog(5).then(function() {
+    lift.omlaag(5);
+  });
 
   // om de ... milliseconden wordt 'vraagSensorData' uitgevoerd
   setInterval(vraagSensorData, UPDATE_INTERVAL);
@@ -54,6 +56,7 @@ function draw() {
 
   teller.show();
   poort.show();
+  lift.show();
 }
 
 
