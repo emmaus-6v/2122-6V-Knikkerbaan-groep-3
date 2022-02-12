@@ -10,10 +10,10 @@ class Teller {
   }
 
   show() {
-    noStroke();               // geen rand
-    fill(255, 255, 255);      // wit
+    noStroke();
+    fill(255, 255, 255);
     textSize(14);
     // print aantal knikkers bovenin
-    text(this.aantal, this.x, this.y);
+    // text(this.aantal.toString(), this.x, this.y);
   }
 }

@@ -6,6 +6,7 @@ const UPDATE_INTERVAL = 5000;   // tijd in milliseconden tussen het door widget 
 var button;
 var teller;
 var wachtijdInput;
+var poort;
 
 
 /**
@@ -18,6 +19,14 @@ function setup() {
   createCanvas(300, 600);
 
   teller = new Teller(150, 50);
+  poort = new Poort();
+
+  poort.dicht(10).then(function() {
+    poort.open(10);
+  });
+  // poort.dicht(50).then(function() {
+  //   console.log("Klaar");
+  // })
 
 
   // om de ... milliseconden wordt 'vraagSensorData' uitgevoerd
@@ -40,10 +49,11 @@ function draw() {
   // twee dikke strepen als 'opvangbak'
   stroke(0, 0, 0);
   strokeWeight(10);
-  line(50, 20, 135, 60);
-  line(250, 20, 165, 60);
+  // x1, y1, x2, y2
+  line(80, 30, 230, 50);
 
   teller.show();
+  poort.show();
 }
 
 
