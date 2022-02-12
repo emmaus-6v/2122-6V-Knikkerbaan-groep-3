@@ -74,7 +74,7 @@ function vraagSensorData() {
 
     if (request.status == 200) {
       console.log("Dit geeft de server terug:" + data);
-      teller.aantal = data.aantalKnikkers;
+      teller.aantal = data.aantal_knikkers;
     }
     else {
       console.log("server reageert niet zoals gehoopt");
