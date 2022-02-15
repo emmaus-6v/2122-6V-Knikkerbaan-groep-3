@@ -26,10 +26,21 @@ function setup() {
   var balletjes = ["f"];
   bal = new Balletje();
   // bal.checkCollide(balletjes);
+
+  slider = new Slider(100, 100, 50, 100, 50, "#FFFFFF");
   
 
   // om de ... milliseconden wordt 'vraagSensorData' uitgevoerd
   setInterval(vraagSensorData, UPDATE_INTERVAL);
+}
+
+function mousePressed() {
+  slider.mousePressed();
+}
+
+function mouseReleased() {
+  slider.mouseReleased();
+  console.log(slider.waarde);
 }
 
 
@@ -67,6 +78,8 @@ function draw() {
   poort.show();
   lift.show();
   bal.show();
+  slider.update();
+  slider.show();
 }
 
 // wat er gebeurt bij een nieuwe run
