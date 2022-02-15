@@ -12,14 +12,14 @@ class Lift {
       stroke(51);
       strokeWeight(4);
       noFill();
-      rect(80,100,130,400);
+      rect(80,110,130,400);
     pop();
     // lift 'houtje' (waar de knikkers op liggen)
     push();
       strokeWeight(3);
       stroke(0, 0, 0);
       var offset = hoogteLift / 500 * this.state;
-      line(85,465 - offset, 205,492 - offset);
+      line(85,475 - offset, 205,502 - offset);
     pop();
   }
 

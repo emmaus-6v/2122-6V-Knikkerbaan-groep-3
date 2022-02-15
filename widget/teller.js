@@ -14,6 +14,11 @@ class Teller {
     fill(255, 255, 255);
     textSize(14);
     // print aantal knikkers bovenin
-    text(this.aantal.toString(), this.x, this.y);
+    if(this.aantal) {
+      // als het aantal al geregistreerd staat
+      text(this.aantal.toString(), this.x, this.y)
+    } else {
+      // als het aantal nog niet geregistreerd staat
+    }
   }
 }

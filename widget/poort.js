@@ -27,7 +27,7 @@ class Poort {
     this.isOpen = open;
   }
 
-  async dicht(stepInterval) {
+  async open(stepInterval) {
     return new Promise(resolve => {
       var state = this.state;
       var t = this;
@@ -44,7 +44,7 @@ class Poort {
     })
   }
 
-  async open(stepInterval) {
+  async dicht(stepInterval) {
     return new Promise(resolve => {
       var state = this.state;
       var t = this;

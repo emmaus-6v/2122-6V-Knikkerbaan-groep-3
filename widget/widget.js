@@ -8,7 +8,7 @@ var teller;
 var wachtijdInput;
 var poort;
 var lift;
-
+var huidigeRunId;
 
 /**
  * setup
@@ -23,13 +23,10 @@ function setup() {
   poort = new Poort();
   lift = new Lift();
 
-  poort.dicht(10).then(function() {
-    poort.open(10);
-  });
-
-  lift.omhoog(5).then(function() {
-    lift.omlaag(5);
-  });
+  var balletjes = ["f"];
+  bal = new Balletje();
+  // bal.checkCollide(balletjes);
+  
 
   // om de ... milliseconden wordt 'vraagSensorData' uitgevoerd
   setInterval(vraagSensorData, UPDATE_INTERVAL);
@@ -48,15 +45,37 @@ function draw() {
   // achtergrond: houtkleur, kies gerust iets anders
   background(175, 144, 105);
 
-  // twee dikke strepen als 'opvangbak'
   stroke(0, 0, 0);
-  strokeWeight(10);
-  // x1, y1, x2, y2
+  strokeWeight(6);
+  // Opvangbak bovenaan
   line(80, 30, 230, 50);
+
+  line(280, 15, 280, 60);
+  line(280, 60, 260, 75);
+
+  // Opvangbak vrije val
+  line(230, 430, 105, 445);
+
+  line(105, 445, 105, 480);
+  
+  line(105, 480, 80, 480);
+  
+  
+  line(80, 445, 80, 480);
 
   teller.show();
   poort.show();
   lift.show();
+  bal.show();
+}
+
+// wat er gebeurt bij een nieuwe run
+function nieuweRun() {
+  poort.open(10).then(function() {
+    setTimeout(function() {
+      poort.dicht(10);
+    }, 2000);
+  });
 }
 
 
@@ -73,8 +92,12 @@ function vraagSensorData() {
     var data = JSON.parse(request.response);
 
     if (request.status == 200) {
-      console.log("Dit geeft de server terug:" + data);
-      teller.aantal = data.aantal_knikkers;
+      if(data.aantal_knikkers) {
+        teller.aantal = data.aantal_knikkers;
+      } else {
+        teller.aantal = null;
+      }
+      console.log(data);
     }
     else {
       console.log("server reageert niet zoals gehoopt");
@@ -83,8 +106,31 @@ function vraagSensorData() {
   }
 
   // verstuur het request
-  request.send()
+  request.send();
 }
+
+
+// om de zoveel tijd checken of er al een nieuwe run bezig is
+setInterval(function() {
+  var request = new XMLHttpRequest();
+  request.open('GET', '/api/get/hoogsterunid', true)
+  
+  request.onload = function () {
+    var runId = JSON.parse(request.response);
+    if (request.status == 200) {
+        if(runId != huidigeRunId) {
+          nieuweRun();
+          huidigeRunId = runId;
+        }
+    }
+    else {
+      console.log("server reageert niet zoals gehoopt");
+      console.log(request.response);
+    }
+  }
+  request.send();
+
+}, 500);
 
 
 // stuurt een http-verzoek aan de server met de

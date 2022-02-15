@@ -18,6 +18,7 @@ app.get('/api/set/sensordata', setSensorData);
 app.get('/api/get/sensordata', getSensorData);
 app.get('/api/set/instellingen', setInstellingen);
 app.get('/api/get/instellingen', getInstellingen);
+app.get('/api/get/hoogsterunid', hoogsteRunId);
 
 // start de server
 app.listen(port, serverIsGestart);
@@ -78,6 +79,11 @@ function setSensorData(request, response) {
              VALUES (?, CURRENT_TIMESTAMP, ?, ?)`;
   db.prepare(SQL).run(huidigeRunID, key, value);
   response.status(200).send();
+}
+
+function hoogsteRunId(request, response) {
+  var runId = geefHoogsteRunID().toString();
+  response.status(200).send(runId);
 }
 
 
