@@ -1,14 +1,17 @@
-
 // globale variabelen
 var aantalKnikkersBoven = 0;    // aantal knikkers dat bovenin is binnengekomen
 var wachttijd = 15;             // wachttijd voor het poortje in seconden
 const UPDATE_INTERVAL = 5000;   // tijd in milliseconden tussen het door widget opvragen van gegevens
-var button;
-var teller;
-var wachtijdInput;
-var poort;
-var lift;
+var teller = new Teller(150, 50);
+var poort = new Poort();
+var lift = new Lift();
 var huidigeRunId;
+var instellingen = {};
+var instellingenSliders = [
+  new Slider(330, 50, 50, 100, 50, "#27d624", "Lift snelheid", "", "snelheid_lift"),
+  new Slider(330, 90, 60, 100, 60, "#fcba03", "Wachttijd poort", "s", "wachttijd_poort")
+];
+
 
 /**
  * setup
@@ -17,30 +20,22 @@ var huidigeRunId;
  */
 function setup() {
   // Maak het canvas van je widget
-  createCanvas(300, 600);
-
-  teller = new Teller(150, 50);
-  poort = new Poort();
-  lift = new Lift();
-
-  var balletjes = ["f"];
-  bal = new Balletje();
-  // bal.checkCollide(balletjes);
-
-  slider = new Slider(100, 100, 50, 100, 50, "#FFFFFF");
-  
+  createCanvas(450, 600);
 
   // om de ... milliseconden wordt 'vraagSensorData' uitgevoerd
   setInterval(vraagSensorData, UPDATE_INTERVAL);
 }
 
 function mousePressed() {
-  slider.mousePressed();
+  Object.values(instellingenSliders).forEach(function(slider) {
+    slider.mousePressed();
+  });
 }
 
 function mouseReleased() {
-  slider.mouseReleased();
-  console.log(slider.waarde);
+  Object.values(instellingenSliders).forEach(function(slider) {
+    slider.mouseReleased();
+  });
 }
 
 
@@ -55,6 +50,9 @@ function draw() {
 
   // achtergrond: houtkleur, kies gerust iets anders
   background(175, 144, 105);
+  fill("#000000");
+  noStroke();
+  rect(300, 0, 150, 600);
 
   stroke(0, 0, 0);
   strokeWeight(6);
@@ -77,9 +75,10 @@ function draw() {
   teller.show();
   poort.show();
   lift.show();
-  bal.show();
-  slider.update();
-  slider.show();
+  Object.values(instellingenSliders).forEach(function(slider) {
+    slider.update();
+    slider.show();
+  });
 }
 
 // wat er gebeurt bij een nieuwe run

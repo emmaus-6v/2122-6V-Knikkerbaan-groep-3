@@ -24,3 +24,4 @@ CREATE TABLE instellingen (
 INSERT INTO runs (stamp) VALUES (CURRENT_TIMESTAMP);
 INSERT INTO sensorData (run, stamp, key, value) VALUES (1, CURRENT_TIMESTAMP, 'aantal_knikkers', 3);
 INSERT INTO instellingen (key, value) VALUES ('wachttijd_poort', 15);
+INSERT INTO instellingen (key, value) VALUES ('snelheid_lift', 50); /* snelheid lift: waarde tussen de 25 en 100 */
