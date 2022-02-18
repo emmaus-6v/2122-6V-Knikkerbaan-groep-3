@@ -89,13 +89,25 @@ function hoogsteRunId(request, response) {
 
 // geeft de laatst ingevoerde instellingen terug
 function getInstellingen(request, response) {
-  // moet nog gemaakt worden
+  var stmt = db.prepare('SELECT key,value FROM instellingen');
+  var data = stmt.all();
+  // sensor data naar een leesbaar object converten, formaat:
+  // {key: value, key: value, etc..}
+  var dataLeesbaar = {};
+  data.forEach(function(obj) {
+    dataLeesbaar[obj.key] = obj.value;
+  })
+  response.status(200).send(dataLeesbaar);
 }
 
 
 // slaat doorgegeven instellingen op in de database
 function setInstellingen(request, response) {
-  // moet nog gemaakt worden
+  var key = Object.keys(request.query)[0];
+  var value = request.query[key];
+  var SQL = `INSERT OR REPLACE INTO instellingen (key, value) VALUES (?, ?);`; // insert or replace zodat er geen dubbele instellingen in komen
+  db.prepare(SQL).run(key, value);
+  response.status(200).send();
 }
 
 
