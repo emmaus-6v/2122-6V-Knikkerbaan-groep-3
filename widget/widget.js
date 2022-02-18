@@ -38,6 +38,29 @@ function mouseReleased() {
   });
 }
 
+// Instellingen uit database halen en waardes goedzetten in widget
+var request = new XMLHttpRequest();
+request.open('GET', '/api/get/instellingen', true)
+
+request.onload = function () {
+  var data = JSON.parse(request.response);
+  if (request.status == 200) {
+      Object.keys(data).forEach(function(key) {
+        var value = data[key];
+        instellingenSliders.forEach(function(slider) {
+          if(slider.instellingNaam == key) {
+            slider.waarde = value;
+          }
+        })
+      })
+  }
+  else {
+    console.log("server reageert niet zoals gehoopt");
+    console.log(request.response);
+  }
+}
+request.send();
+
 
 /**
  * draw
