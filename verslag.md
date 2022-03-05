@@ -20,37 +20,56 @@ De knikkerbaan zendt de hoeveelheid getelde knikkers naar een server die de gege
 ### feature 3: Widget wisselt info uit met knikkerbaan
 In de browser kan met een URL een widget worden geladen. Deze geeft de knikkerbaan schematisch weer in een frame van 800x400px. De getelde knikkers en duur dat de poort openstaat worden hierin getoond. De duur dat de poort openstaat kan hierin worden veranderd. De knikkerbaan kan deze wachttijd van de server ontvangen en zijn werking erop aanpassen.
 
-### feature 4:
-<beschrijf hier feature 4>
+## Scrum planning:
 
+### Week 44
+- Schets ontwerp knikkerbaan maken
+- Onderdelen knikkerbaan uitzoeken
 
-### feature 5:
-<beschrijf hier feature 5>
+### Week 45
+- Toetsweek
 
+### Week 46
+- Toetsweek
+- TU Delft open dag
 
-### feature 6:
-<beschrijf hier feature 6>
+### Week 47
+- Concept ontwerp maken
+- Definitief ontwerp maken
 
+### Week 48
+- Begin maken hardware gedeelte knikkerbaan
 
+### Week 49 & 50
+- Hardware gedeelte afronden
 
-## Evaluaties van scrumplanningen:
+### Week 51
+- In de les begin maken aan code (waarschijnlijk druk met toetsen, dus niks thuis)
 
-### week 43
+### Kerstvakantie
+- Evt. verderwerken aan code, keer afspreken
 
-### week 44
+## Evaluatie planning
+Het bouwen van de knikkerbaan duurde langer dan verwacht. Vooral omdat we een aantal problemen ondervonden met de lift, zoals een touwtje wat afbrak waardoor we de lift gedeeltelijk opnieuw hebben moeten maken. Het bouwen van de rest van de baan verliep redelijk soepel, verreweg de grootste uitdaging van onze knikkerbaan was het werkend krijgen van de lift.
 
-### week 45
-
-### week ...
-
+Achteraf gezien hebben we iets te veel tijd besteed aan het bouwen van de knikkerbaan (en vooral de lift), en hebben we daardoor nog maar weinig weken over gehad om de code te schrijven en testen. Gelukkig is dit uiteindelijk nog wel gelukt, en hebben we een mooie widget weten te maken met veel features, zoals animaties en de mogelijkheid van instellingen aanpassen.
 
 
 ## Technische verantwoording
 Geef hier bijvoorbeeld de volgene informatie, maar voel je vrij er informatie aan toe te voegen.
 
 De Arduino werkt op de volgende manier:
+De arduino werkt met 5 verschillende fases. De knikkerbaan begint altijd in de eerste fase (fase 0).
+- Fase 0: Het poortje van de knikkerbaan staat open, voor een x aantal seconden. Het exacte aantal seconden kan ik de widget ingesteld worden. De knikkers gaan de lift in, terwijl ze geteld worden.
+- Fase 1: Het poortje van de knikkerbaan gaat dicht. De laatste knikkers stromen binnen, en ook deze worden nog geteld. Er komen dus geen nieuwe knikkers meer in de knikkerbaan, die blijven bovenaan wachten tot de volgende run. De knikkers stromen naar de lift, de tijd tussen deze fase en het omhoog gaan van de lift kan ook bepaald worden in de widget.
+- Fase 2: De lift is omhoog aan het gaan. De servo blijft draaien totdat de afstandssensor aangeeft dat de lift boven is. Dit wordt ook in de widget met een animatie laten zien. De snelheid van de lift kan worden aangepast in de widget, in een percentage. Als de lift boven is begint fase 3.
+- Fase 3: De lift is boven, en de knikkers stromen uit de lift. De RGB-strip in de 'lichttunnel' gaat aan. De duur van deze fase kan bepaald worden in de widget.
+- Fase 4: De lift is naar beneden aan het gaan. De servo blijft draaien totdat de afstandssensor aangeeft dat de lift beneden is. Zodra de lift beneden is begint fase 5.
+- Fase 5: Als de lift weer beneden is, kan de nieuwe fase zo beginnen. Eerste worden er een aantal requests gemaakt. Het aantal knikkers van deze run wordt doorgegeven, het totale aantal knikkers wordt doorgegeven en er wordt een request gestuurd die aangeeft dat er een nieuwe run start. Bovendien worden in deze fase de nieuwe instellingen van de widget opgehaald (de 4 sliders), die in de volgende run worden toegepast. Als alle requests gemaakt zijn begint fase 0 weer.
 
 De knikkerbaan en de widget wisselen de volgende data met elkaar uit:
+- De instellingen (widget -> knikkerbaan)
+- De sensor data (knikkerbaan -> widget)
 
 We hebben dat op deze manier genormaliseerd in een database opgenomen (neem een strokendiagram op). De reden dat we voor ... kiezen is...
 
