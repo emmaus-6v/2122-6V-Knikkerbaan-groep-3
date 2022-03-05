@@ -3,3 +3,8 @@
   padding: 0;
   box-sizing: border-box;
 }
+
+img {
+  /* voor de disco bal */
+  width: 50px;
+}

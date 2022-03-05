@@ -23,6 +23,8 @@ var lift = new Lift(tijdTotLiftOmhoogVolleSnelheid);
 
 var runAnimatieTimeout; // om de animatie te kunnen stoppen bij een nieuwe run
 
+var discoBalImg;
+
 /**
  * setup
  * de code in deze functie wordt eenmaal uitgevoerd,
@@ -32,6 +34,8 @@ function setup() {
   // Maak het canvas van je widget
   createCanvas(450, 600);
 
+  discoBalImg = createImg("images/disco-bal.gif", "disco-bal");
+  discoBalImg.position(-1000, -1000); // disco bal laten verdwijnen in het begin
 }
 
 function mousePressed() {
@@ -95,13 +99,37 @@ function draw() {
 
   // Opvangbak vrije val
   line(230, 430, 105, 445);
-
   line(105, 445, 105, 480);
-  
   line(105, 480, 80, 480);
-  
-  
   line(80, 445, 80, 480);
+
+  // 'lichttunnel' waar knikkers uit lift komen
+  noStroke();
+  rect(185, 120, 25, 25);
+  stroke("#dbb339");
+  strokeWeight(4);
+  line(205, 143, 50, 170);
+  line(205, 118, 50, 145);
+
+  // laatste deel vd baan
+  strokeWeight(6);
+  stroke(0);
+  line(15, 160, 15, 215);
+  line(15, 250, 60, 265);
+  line(85, 260, 65, 355);
+
+  stroke("#dbb339");
+  strokeWeight(4);
+  line(65, 370, 65, 540);
+  line(30, 330, 30, 540);
+
+  stroke(0);
+  strokeWeight(6);
+  line(25, 570, 160, 590)
+
+  
+
+  noStroke();
 
   poort.show();
   lift.show();
@@ -170,8 +198,10 @@ function startRunAnimatie() {
     runAnimatieTimeout = setTimeout(function() {
       lift.setSnelheid(instellingenSliders[0].waarde);
       lift.omhoog().then(function() {
+        discoBalImg.position(100, 100); // disco bal laten zien
         var tijdTotKnikkersUitLift = instellingenSliders[3].waarde * 1000;
         runAnimatieTimeout = setTimeout(function() {
+          discoBalImg.position(-1000, -1000); // disco bal weer laten verdwijnen
           lift.omlaag();
         }, tijdTotKnikkersUitLift);
       });
