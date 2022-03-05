@@ -18,8 +18,10 @@ var statistieken = {
   vorigeRunAantalKnikkers: new Statistiek("Aantal knikkers\nvorige run", 400)
 }
 
-const tijdTotLiftOmhoogVolleSnelheid = 10000; // dit is een schatting, tijd die de lift erover doet om omhoog te komen op 100% snelheid
+const tijdTotLiftOmhoogVolleSnelheid = 5000; // dit is een schatting, tijd die de lift erover doet om omhoog te komen op 100% snelheid
 var lift = new Lift(tijdTotLiftOmhoogVolleSnelheid);
+
+var runAnimatieTimeout; // om de animatie te kunnen stoppen bij een nieuwe run
 
 /**
  * setup
@@ -114,28 +116,13 @@ function draw() {
 
 // wat er gebeurt bij een nieuwe run
 function nieuweRun() {
+  resetRunAnimatie(); // als de widget denkt dat de vorige run nog bezig is, resetten en nieuwe animatie starten
+  startRunAnimatie();
+
   // run ID updaten
   getHuidigeRunId().then(runId => {
     statistieken.runId.waarde = runId;
   });
-
-  poort.open(10);
-
-  var poortOpenTijd = instellingenSliders[1].waarde * 1000; // slider waarde "Poort open tijd", omgezet naar ms
-  setTimeout(function() {
-    // poort dicht animatie na x aantal seconden
-    poort.dicht(10);
-    var tijdTotKnikkersInLift = instellingenSliders[2].waarde * 1000;
-    setTimeout(function() {
-      lift.setSnelheid(instellingenSliders[0].waarde);
-      lift.omhoog().then(function() {
-        var tijdTotKnikkersUitLift = instellingenSliders[3].waarde * 1000;
-        setTimeout(function() {
-          lift.omlaag();
-        }, tijdTotKnikkersUitLift);
-      });
-    }, tijdTotKnikkersInLift);
-  }, poortOpenTijd);
 
   // sensor data opvragen
   var request = new XMLHttpRequest();
@@ -144,12 +131,8 @@ function nieuweRun() {
   request.onload = function () {
     var data = JSON.parse(request.response);
     if (request.status == 200) {
-      if(data.aantal_knikkers) {
-        statistieken.vorigeRunAantalKnikkers.waarde = data.aantal_knikkers;
-      }
-      if(data.totaal_aantal_knikkers) {
-        statistieken.totaalAantalKnikkers.waarde = data.totaal_aantal_knikkers
-      }
+      statistieken.vorigeRunAantalKnikkers.waarde = data.aantal_knikkers | 0; // aantal aan statistiek doorgeven, als er geen aantal is op 0 zetten
+      statistieken.totaalAantalKnikkers.waarde = data.totaal_aantal_knikkers | 0; // idem
       console.log(data);
     }
     else {
@@ -158,27 +141,47 @@ function nieuweRun() {
     }
   }
   request.send();
-
-  
-
-    
 }
 
 // om de zoveel tijd checken of er al een nieuwe run bezig is
+getHuidigeRunId().then(runId => {
+  huidigeRunId = runId; // zorgen dat de trigger niet gelijk afgaat
 setInterval(function() {
   getHuidigeRunId().then(runId => {
     if(runId != huidigeRunId) {
       nieuweRun();
       huidigeRunId = runId;
     }
+  })
+  .catch(function() {
+    console.log("Eerste run nog niet bezig");
   });
 }, 500);
+})
 
 
-// stuurt een http-verzoek aan de server met de
-// nieuwe instellingen
-function stuurNieuweInstellingen() {
-  // moet nog worden gemaakt
+function startRunAnimatie() {
+  poort.open(10);
+  var poortOpenTijd = instellingenSliders[1].waarde * 1000; // slider waarde "Poort open tijd", omgezet naar ms
+  runAnimatieTimeout = setTimeout(function() {
+    // poort dicht animatie na x aantal seconden
+    poort.dicht(10);
+    var tijdTotKnikkersInLift = instellingenSliders[2].waarde * 1000;
+    runAnimatieTimeout = setTimeout(function() {
+      lift.setSnelheid(instellingenSliders[0].waarde);
+      lift.omhoog().then(function() {
+        var tijdTotKnikkersUitLift = instellingenSliders[3].waarde * 1000;
+        runAnimatieTimeout = setTimeout(function() {
+          lift.omlaag();
+        }, tijdTotKnikkersUitLift);
+      });
+    }, tijdTotKnikkersInLift);
+  }, poortOpenTijd);
+}
+
+function resetRunAnimatie() {
+  clearTimeout(runAnimatieTimeout);
+  lift.reset();
 }
 
 async function getHuidigeRunId() {
@@ -186,13 +189,11 @@ async function getHuidigeRunId() {
     var request = new XMLHttpRequest();
     request.open('GET', '/api/get/hoogsterunid', true)
     request.onload = function () {
-      var runId = JSON.parse(request.response);
       if (request.status == 200) {
-          resolve(runId);
+        var runId = JSON.parse(request.response);
+        resolve(runId);
       }
       else {
-        console.log("server reageert niet zoals gehoopt");
-        console.log(request.response);
         reject();
       }
     }

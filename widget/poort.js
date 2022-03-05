@@ -61,5 +61,10 @@ class Poort {
     })
   }
 
+  reset() {
+    this.state = 0;
+    this.isOpen = false;
+  }
+
   
 }
