@@ -57,9 +57,9 @@ function creeerNieuweRun(request, response) {
 
 // geeft laatste sensordata van de run terug 
 function getSensorData(request, response) {
-  var huidigeRunID = geefHoogsteRunID();
+  var vorigeRunID = geefHoogsteRunID() - 1;
   var stmt = db.prepare('SELECT key,value FROM sensorData WHERE run = ? ORDER BY stamp DESC');
-  var data = stmt.all(huidigeRunID);
+  var data = stmt.all(vorigeRunID);
   // sensor data naar een leesbaar object converten, formaat:
   // {key: value, key: value, etc..}
   var dataLeesbaar = {};
@@ -95,7 +95,7 @@ function getInstellingen(request, response) {
   // {key: value, key: value, etc..}
   var dataLeesbaar = {};
   data.forEach(function(obj) {
-    dataLeesbaar[obj.key] = obj.value;
+    dataLeesbaar[obj.key] = parseInt(obj.value);
   })
   response.status(200).send(dataLeesbaar);
 }

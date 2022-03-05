@@ -8,8 +8,10 @@ var lift = new Lift();
 var huidigeRunId;
 var instellingen = {};
 var instellingenSliders = [
-  new Slider(330, 50, 50, 100, 50, "#27d624", "Lift snelheid", "", "snelheid_lift"),
-  new Slider(330, 90, 60, 100, 60, "#fcba03", "Wachttijd poort", "s", "wachttijd_poort")
+  new Slider(330, 50, 30, 100, 50, "#27d624", "Lift snelheid", "%", "snelheid_lift"),
+  new Slider(330, 90, 2, 6, 3, "#fcba03", "Poort open tijd", "s", "poort_open_tijd"),
+  new Slider(330, 130, 3, 10, 5, "#4187e0", "Tijd knikkers in lift", "s", "tijd_tot_knikkers_in_lift"),
+  new Slider(330, 170, 3, 10, 5, "#b76385", "Tijd knikkers uit lift", "s", "tijd_tot_knikkers_uit_lift")
 ];
 
 
@@ -22,8 +24,6 @@ function setup() {
   // Maak het canvas van je widget
   createCanvas(450, 600);
 
-  // om de ... milliseconden wordt 'vraagSensorData' uitgevoerd
-  setInterval(vraagSensorData, UPDATE_INTERVAL);
 }
 
 function mousePressed() {
@@ -109,41 +109,32 @@ function nieuweRun() {
   poort.open(10).then(function() {
     setTimeout(function() {
       poort.dicht(10);
-    }, 2000);
+    }, 3000);
   });
-}
 
-
-// stuurt een verzoek aan de server dat alle
-// sensordata opvraagt
-function vraagSensorData() {
+  // sensor data opvragen
   var request = new XMLHttpRequest();
 
-  // maak een http-verzoek
-  request.open('GET', '/api/get/sensordata', true)
-
-  // wat uitvoeren als het antwoord teruggegeven wordt?
-  request.onload = function () {
-    var data = JSON.parse(request.response);
-
-    if (request.status == 200) {
-      if(data.aantal_knikkers) {
-        teller.aantal = data.aantal_knikkers;
-      } else {
-        teller.aantal = null;
+    // maak een http-verzoek
+    request.open('GET', '/api/get/sensordata', true)
+    request.onload = function () {
+      var data = JSON.parse(request.response);
+      if (request.status == 200) {
+        console.log(data);
+        // if(data.aantal_knikkers) {
+        //   teller.aantal = data.aantal_knikkers;
+        // } else {
+        //   teller.aantal = null;
+        // }
+        // console.log(data);
       }
-      console.log(data);
+      else {
+        console.log("server reageert niet zoals gehoopt");
+        console.log(request.response);
+      }
     }
-    else {
-      console.log("server reageert niet zoals gehoopt");
-      console.log(request.response);
-    }
-  }
-
-  // verstuur het request
-  request.send();
+    request.send();
 }
-
 
 // om de zoveel tijd checken of er al een nieuwe run bezig is
 setInterval(function() {

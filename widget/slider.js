@@ -34,7 +34,7 @@ class Slider {
   show() {
     // tekst tekenen
     push();
-      textSize(11);
+      textSize(10);
       fill("#ffffff");
       text(this.naam + ":", this.x - 6, this.y - 12);
       textAlign(RIGHT);
