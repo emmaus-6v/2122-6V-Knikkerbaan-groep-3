@@ -2,7 +2,6 @@
 var aantalKnikkersBoven = 0;    // aantal knikkers dat bovenin is binnengekomen
 var wachttijd = 15;             // wachttijd voor het poortje in seconden
 const UPDATE_INTERVAL = 5000;   // tijd in milliseconden tussen het door widget opvragen van gegevens
-var teller = new Teller(150, 50);
 var poort = new Poort();
 var lift = new Lift();
 var huidigeRunId;
@@ -13,6 +12,12 @@ var instellingenSliders = [
   new Slider(330, 130, 3, 10, 5, "#4187e0", "Tijd knikkers in lift", "s", "tijd_tot_knikkers_in_lift"),
   new Slider(330, 170, 3, 10, 5, "#b76385", "Tijd knikkers uit lift", "s", "tijd_tot_knikkers_uit_lift")
 ];
+
+var statistieken = {
+  runId: new Statistiek("Huidige run", 150),
+  totaalAantalKnikkers: new Statistiek("Totaal aantal\nknikkers", 250),
+  huidigeRunAantalKnikkers: new Statistiek("Aantal knikkers\nvorige run", 350)
+}
 
 
 /**
@@ -95,12 +100,14 @@ function draw() {
   
   line(80, 445, 80, 480);
 
-  teller.show();
   poort.show();
   lift.show();
   Object.values(instellingenSliders).forEach(function(slider) {
     slider.update();
     slider.show();
+  });
+  Object.values(statistieken).forEach(function(statistiek) {
+    statistiek.show();
   });
 }
 
@@ -114,7 +121,6 @@ function nieuweRun() {
 
   // sensor data opvragen
   var request = new XMLHttpRequest();
-
     // maak een http-verzoek
     request.open('GET', '/api/get/sensordata', true)
     request.onload = function () {
