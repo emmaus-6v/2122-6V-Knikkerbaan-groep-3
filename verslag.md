@@ -1,12 +1,10 @@
 # Verslag eindopdracht 6V
 ### gemaakt door *Valentijn van Winden*, *Gijs Arnold* en *Kevin Smit*
-
 ---
 
 ## Inleiding
-Lorem ipsum...
-
-
+De knikkerbaan. Een veelzijdig project, maar wel met veel uitdagingen. Grootse plannen, met vele tegenslagen. Maar toch is het gelukt.
+We kwamen al vrij snel op het plan om een lift te gaan bouwen. Dit was een ambitieus plan, en heeft veel tijd gekost. De lift is daarmee onze 'unieke feature' die niemand anders heeft. Bovendien hebben wij animaties in de widget gemaakt, die synchroon lopen met het verloop van de fysieke knikkerbaan. In dit verslag leest u precies hoe de knikkerbaan werkt, en waar we allemaal tegenaan gelopen zijn.
 
 ## Features
 Beschrijf hier de eigenschappen van jullie knikkerbaan (gebruik gerust plaatjes) kijk in map fotos naar KnikkerBaan.png . De eerste paar zijn voorgegeven:
@@ -52,13 +50,11 @@ In de browser kan met een URL een widget worden geladen. Deze geeft de knikkerba
 ## Evaluatie planning
 Het bouwen van de knikkerbaan duurde langer dan verwacht. Vooral omdat we een aantal problemen ondervonden met de lift, zoals een touwtje wat afbrak waardoor we de lift gedeeltelijk opnieuw hebben moeten maken. Het bouwen van de rest van de baan verliep redelijk soepel, verreweg de grootste uitdaging van onze knikkerbaan was het werkend krijgen van de lift.
 
-Achteraf gezien hebben we iets te veel tijd besteed aan het bouwen van de knikkerbaan (en vooral de lift), en hebben we daardoor nog maar weinig weken over gehad om de code te schrijven en testen. Gelukkig is dit uiteindelijk nog wel gelukt, en hebben we een mooie widget weten te maken met veel features, zoals animaties en de mogelijkheid van instellingen aanpassen.
+Achteraf gezien hebben we iets te veel tijd besteed aan het bouwen van de knikkerbaan (en vooral de lift), en hebben we daardoor nog maar weinig weken over gehad om de code te schrijven en testen. Gelukkig is dit uiteindelijk nog wel gelukt, en hebben we een mooie widget weten te maken met veel features, zoals animaties en de mogelijkheid van instellingen aanpassen. Hier hebben we (doordat het bouwen van de baan zo lang duurde) wel in de voorjaarsvakantie veel aan moeten doen.
 
 
 ## Technische verantwoording
-Geef hier bijvoorbeeld de volgene informatie, maar voel je vrij er informatie aan toe te voegen.
-
-De Arduino werkt op de volgende manier:
+### De Arduino werkt op de volgende manier:
 De arduino werkt met 5 verschillende fases. De knikkerbaan begint altijd in de eerste fase (fase 0).
 - Fase 0: Het poortje van de knikkerbaan staat open, voor een x aantal seconden. Het exacte aantal seconden kan ik de widget ingesteld worden. De knikkers gaan de lift in, terwijl ze geteld worden.
 - Fase 1: Het poortje van de knikkerbaan gaat dicht. De laatste knikkers stromen binnen, en ook deze worden nog geteld. Er komen dus geen nieuwe knikkers meer in de knikkerbaan, die blijven bovenaan wachten tot de volgende run. De knikkers stromen naar de lift, de tijd tussen deze fase en het omhoog gaan van de lift kan ook bepaald worden in de widget.
@@ -67,14 +63,14 @@ De arduino werkt met 5 verschillende fases. De knikkerbaan begint altijd in de e
 - Fase 4: De lift is naar beneden aan het gaan. De servo blijft draaien totdat de afstandssensor aangeeft dat de lift beneden is. Zodra de lift beneden is begint fase 5.
 - Fase 5: Als de lift weer beneden is, kan de nieuwe fase zo beginnen. Eerste worden er een aantal requests gemaakt. Het aantal knikkers van deze run wordt doorgegeven, het totale aantal knikkers wordt doorgegeven en er wordt een request gestuurd die aangeeft dat er een nieuwe run start. Bovendien worden in deze fase de nieuwe instellingen van de widget opgehaald (de 4 sliders), die in de volgende run worden toegepast. Als alle requests gemaakt zijn begint fase 0 weer.
 
-De knikkerbaan en de widget wisselen de volgende data met elkaar uit:
+### De knikkerbaan en de widget wisselen de volgende data met elkaar uit:
 - De instellingen (widget -> knikkerbaan)
 - De sensor data (knikkerbaan -> widget)
 
-We hebben dat op deze manier genormaliseerd in een database opgenomen:
+### We hebben dat op deze manier genormaliseerd in een database opgenomen:
 De datastructuur die in de standaardcode stond voldeed al redelijk goed aan onze eisen. Het enige wat we hebben veranderd, is de manier waarop de instellingen en sensor data worden opgeslagen. In de standaardcode werd dit gedaan in een kolom, maar wij vonden het makkelijker om die met een 'key value' systeem te doen. Dat houdt in dat de 'key' kolom de naam van de instelling / sensor bevat, en de 'value' kolom de waarde hiervan. Op deze manier kun je makkelijker nieuwe instellingen toevoegen. Dit hebben we ook moeten aanpassen in de server app.
 
-Uitdagingen die we tegenkwamen:
+### Uitdagingen die we tegenkwamen:
 - De grootste uitdaging die we tegenkwamen was het bouwen van de lift... Het ontwerpen / bouwen van het mechanische gedeelte hiervan kostte veel meer tijd dan wij hadden gehoopt.
 - Het aansturen van de lift was ook lastig. In eerste instantie hadden we twee 360 servo motors gemonteerd, die elkaar ondersteunden door het touwtje te 'duwen' en te trekken. Dit bleek echter moeilijk te programmeren, dus hebben we de onderste servo weggehaald en een gewichtje gebruikt om de lift naar beneden te krijgen. Dan kwamen we ook nog het probleem tegen om te bepalen wanneer de lift boven / beneden was aangekomen. In eerste instantie hebben we de 360 servo vervangen door een stepper motor, maar ook dit bleek niet handig aangezien de afstand die de stepper motor aflegde ook nog kon varieren en de motor bovendien heel langzaam ging. We hebben de 360 servo weer teruggemonteerd en bovendien een ultrasone afstandssensor gebruikt. Deze bepaalt of de lift beneden of boven is, en bleek nauwkeurig genoeg te zijn.
 - We ondervonden ook een probleem met de opvangbak, de knikkers vielen er in eerste instantie soms uit tijdens de vrije val. Dit heeft Kevin opgelost door van blik een wand te maken en een aantal kleine plankjes te monteren waardoor de knikker altijd goed terecht komt.
