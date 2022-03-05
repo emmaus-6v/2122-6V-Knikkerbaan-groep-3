@@ -55,7 +55,7 @@ Achteraf gezien hebben we iets te veel tijd besteed aan het bouwen van de knikke
 
 ## Technische verantwoording
 ### De Arduino werkt op de volgende manier:
-De arduino werkt met 5 verschillende fases. De knikkerbaan begint altijd in de eerste fase (fase 0).
+De Arduino werkt met 5 verschillende fases. De knikkerbaan begint altijd in de eerste fase (fase 0).
 - Fase 0: Het poortje van de knikkerbaan staat open, voor een x aantal seconden. Het exacte aantal seconden kan ik de widget ingesteld worden. De knikkers gaan de lift in, terwijl ze geteld worden.
 - Fase 1: Het poortje van de knikkerbaan gaat dicht. De laatste knikkers stromen binnen, en ook deze worden nog geteld. Er komen dus geen nieuwe knikkers meer in de knikkerbaan, die blijven bovenaan wachten tot de volgende run. De knikkers stromen naar de lift, de tijd tussen deze fase en het omhoog gaan van de lift kan ook bepaald worden in de widget.
 - Fase 2: De lift is omhoog aan het gaan. De servo blijft draaien totdat de afstandssensor aangeeft dat de lift boven is. Dit wordt ook in de widget met een animatie laten zien. De snelheid van de lift kan worden aangepast in de widget, in een percentage. Als de lift boven is begint fase 3.
@@ -74,10 +74,11 @@ De datastructuur die in de standaardcode stond voldeed al redelijk goed aan onze
 - De grootste uitdaging die we tegenkwamen was het bouwen van de lift... Het ontwerpen / bouwen van het mechanische gedeelte hiervan kostte veel meer tijd dan wij hadden gehoopt.
 - Het aansturen van de lift was ook lastig. In eerste instantie hadden we twee 360 servo motors gemonteerd, die elkaar ondersteunden door het touwtje te 'duwen' en te trekken. Dit bleek echter moeilijk te programmeren, dus hebben we de onderste servo weggehaald en een gewichtje gebruikt om de lift naar beneden te krijgen. Dan kwamen we ook nog het probleem tegen om te bepalen wanneer de lift boven / beneden was aangekomen. In eerste instantie hebben we de 360 servo vervangen door een stepper motor, maar ook dit bleek niet handig aangezien de afstand die de stepper motor aflegde ook nog kon varieren en de motor bovendien heel langzaam ging. We hebben de 360 servo weer teruggemonteerd en bovendien een ultrasone afstandssensor gebruikt. Deze bepaalt of de lift beneden of boven is, en bleek nauwkeurig genoeg te zijn.
 - We ondervonden ook een probleem met de opvangbak, de knikkers vielen er in eerste instantie soms uit tijdens de vrije val. Dit heeft Kevin opgelost door van blik een wand te maken en een aantal kleine plankjes te monteren waardoor de knikker altijd goed terecht komt.
+- Een andere uitdaging was het aan de praat krijgen van de Arduino. Deze wilde in het begin maar niet verbinden met de wifi. Het probleem bleek de firmware te zijn. Valentijn heeft thuis uitgezocht hoe we de firmware konden updaten, en dit ook gedaan. Daarna werkte het verbinden, maar wilde de Arduino nog geen requests maken. Na lang zoeken en debuggen bleek het aan de USB-verlengkabel te liggen die we gebruikten... Na het uploaden van de code zonder deze verlengkabel werkte alles, en bleek al het debuggen verspilde tijd. Welkom in de programmeerwereld.
 
 ## Reflectie op opdracht
-#### --leerling1--
-*(50 - 100 woorden. Geef o.a. wat je tijdens deze opdracht beter onder de knie hebt gekregen en welk leerpunt je voor jezelf meeneemt)*
+#### Valentijn
+*Het programmeergedeelte was voor mij niet lastig. Ik heb al een paar honderd (misschien zelfs wel duizend) ervaring met JavaScript en SQL, dus dit gedeelte was appeltje eitje. Het enige wat wat moeizaam ging, is overschakelen naar C++ voor het programmeren van de Arduino. Af en toe liep ik tegen problemen met verschillende datatypes aan, zoals een vermenigvuldiging tussen een int en een float die altijd 0 gaf, wat bleek te liggen aan de verschillende datatypes. Ook bleek het soms helemaal niet aan de code te liggen, maar aan de hardware. Al met al vond ik het wel een leuke opdracht, vooral omdat het goed aansluit op de studie die ik ga doen: mechanical engineering*
 
 #### --leerling2--
 
