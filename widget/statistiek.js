@@ -24,9 +24,5 @@ class Statistiek {
       text(this.waarde, 375, this.y + 48);
     pop();
   }
-
-  setWaarde(waarde) {
-    this.waarde = waarde;
-  }
   
 }

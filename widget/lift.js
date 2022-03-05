@@ -1,8 +1,11 @@
 class Lift {
   state;
+  snelheid; // waarde tussen 0 en 100
+  tijdTotOmhoogVolleSnelheid;
 
-  constructor() {
+  constructor(_tijdTotOmhoogVolleSnelheid) {
     this.state = 0; // 0 = helemaal beneden, 500 = helemaal boven
+    this.tijdTotOmhoogVolleSnelheid = _tijdTotOmhoogVolleSnelheid;
   }
 
   show() {
@@ -27,8 +30,14 @@ class Lift {
     this.state = state;
   }
 
-  async omhoog(stepInterval) {
+  setSnelheid(snelheid) {
+    this.snelheid = snelheid;
+  }
+
+  async omhoog() {
     return new Promise(resolve => {
+      var tijdTotOmhoog = this.tijdTotOmhoogVolleSnelheid / (this.snelheid / 100);
+      var interval = tijdTotOmhoog / 500;
       var state = this.state;
       var t = this;
       var interval = setInterval(function() {
@@ -39,12 +48,14 @@ class Lift {
           resolve();
         }
         t.setState(state);
-      }, stepInterval);
+      }, interval);
     })
   }
 
-  async omlaag(stepInterval) {
+  async omlaag() {
     return new Promise(resolve => {
+      var tijdTotOmhoog = this.tijdTotOmhoogVolleSnelheid / (this.snelheid / 100);
+      var interval = tijdTotOmhoog / 500;
       var state = this.state;
       var t = this;
       var interval = setInterval(function() {
@@ -55,7 +66,7 @@ class Lift {
           resolve();
         }
         t.setState(state);
-      }, stepInterval);
+      }, interval);
     })
   }
 }

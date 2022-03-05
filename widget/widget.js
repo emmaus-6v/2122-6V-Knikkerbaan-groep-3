@@ -3,7 +3,6 @@ var aantalKnikkersBoven = 0;    // aantal knikkers dat bovenin is binnengekomen
 var wachttijd = 15;             // wachttijd voor het poortje in seconden
 const UPDATE_INTERVAL = 5000;   // tijd in milliseconden tussen het door widget opvragen van gegevens
 var poort = new Poort();
-var lift = new Lift();
 var huidigeRunId;
 var instellingen = {};
 var instellingenSliders = [
@@ -14,11 +13,13 @@ var instellingenSliders = [
 ];
 
 var statistieken = {
-  runId: new Statistiek("Huidige run", 150),
-  totaalAantalKnikkers: new Statistiek("Totaal aantal\nknikkers", 250),
-  huidigeRunAantalKnikkers: new Statistiek("Aantal knikkers\nvorige run", 350)
+  runId: new Statistiek("Huidige run", 200),
+  totaalAantalKnikkers: new Statistiek("Totaal aantal\nknikkers", 300),
+  vorigeRunAantalKnikkers: new Statistiek("Aantal knikkers\nvorige run", 400)
 }
 
+const tijdTotLiftOmhoogVolleSnelheid = 10000; // dit is een schatting, tijd die de lift erover doet om omhoog te komen op 100% snelheid
+var lift = new Lift(tijdTotLiftOmhoogVolleSnelheid);
 
 /**
  * setup
@@ -32,13 +33,13 @@ function setup() {
 }
 
 function mousePressed() {
-  Object.values(instellingenSliders).forEach(function(slider) {
+  instellingenSliders.forEach(function(slider) {
     slider.mousePressed();
   });
 }
 
 function mouseReleased() {
-  Object.values(instellingenSliders).forEach(function(slider) {
+  instellingenSliders.forEach(function(slider) {
     slider.mouseReleased();
   });
 }
@@ -102,7 +103,7 @@ function draw() {
 
   poort.show();
   lift.show();
-  Object.values(instellingenSliders).forEach(function(slider) {
+  instellingenSliders.forEach(function(slider) {
     slider.update();
     slider.show();
   });
@@ -113,47 +114,43 @@ function draw() {
 
 // wat er gebeurt bij een nieuwe run
 function nieuweRun() {
-  poort.open(10).then(function() {
-    setTimeout(function() {
-      poort.dicht(10);
-    }, 3000);
+  // run ID updaten
+  getHuidigeRunId().then(runId => {
+    statistieken.runId.waarde = runId;
   });
+
+  poort.open(10);
+
+  var poortOpenTijd = instellingenSliders[1].waarde * 1000; // slider waarde "Poort open tijd", omgezet naar ms
+  setTimeout(function() {
+    // poort dicht animatie na x aantal seconden
+    poort.dicht(10);
+    var tijdTotKnikkersInLift = instellingenSliders[2].waarde * 1000;
+    setTimeout(function() {
+      lift.setSnelheid(instellingenSliders[0].waarde);
+      lift.omhoog().then(function() {
+        var tijdTotKnikkersUitLift = instellingenSliders[3].waarde * 1000;
+        setTimeout(function() {
+          lift.omlaag();
+        }, tijdTotKnikkersUitLift);
+      });
+    }, tijdTotKnikkersInLift);
+  }, poortOpenTijd);
 
   // sensor data opvragen
   var request = new XMLHttpRequest();
-    // maak een http-verzoek
-    request.open('GET', '/api/get/sensordata', true)
-    request.onload = function () {
-      var data = JSON.parse(request.response);
-      if (request.status == 200) {
-        console.log(data);
-        // if(data.aantal_knikkers) {
-        //   teller.aantal = data.aantal_knikkers;
-        // } else {
-        //   teller.aantal = null;
-        // }
-        // console.log(data);
-      }
-      else {
-        console.log("server reageert niet zoals gehoopt");
-        console.log(request.response);
-      }
-    }
-    request.send();
-}
-
-// om de zoveel tijd checken of er al een nieuwe run bezig is
-setInterval(function() {
-  var request = new XMLHttpRequest();
-  request.open('GET', '/api/get/hoogsterunid', true)
-  
+  // maak een http-verzoek
+  request.open('GET', '/api/get/sensordata', true)
   request.onload = function () {
-    var runId = JSON.parse(request.response);
+    var data = JSON.parse(request.response);
     if (request.status == 200) {
-        if(runId != huidigeRunId) {
-          nieuweRun();
-          huidigeRunId = runId;
-        }
+      if(data.aantal_knikkers) {
+        statistieken.vorigeRunAantalKnikkers.waarde = data.aantal_knikkers;
+      }
+      if(data.totaal_aantal_knikkers) {
+        statistieken.totaalAantalKnikkers.waarde = data.totaal_aantal_knikkers
+      }
+      console.log(data);
     }
     else {
       console.log("server reageert niet zoals gehoopt");
@@ -162,6 +159,19 @@ setInterval(function() {
   }
   request.send();
 
+  
+
+    
+}
+
+// om de zoveel tijd checken of er al een nieuwe run bezig is
+setInterval(function() {
+  getHuidigeRunId().then(runId => {
+    if(runId != huidigeRunId) {
+      nieuweRun();
+      huidigeRunId = runId;
+    }
+  });
 }, 500);
 
 
@@ -169,4 +179,23 @@ setInterval(function() {
 // nieuwe instellingen
 function stuurNieuweInstellingen() {
   // moet nog worden gemaakt
+}
+
+async function getHuidigeRunId() {
+  return new Promise((resolve, reject) => {
+    var request = new XMLHttpRequest();
+    request.open('GET', '/api/get/hoogsterunid', true)
+    request.onload = function () {
+      var runId = JSON.parse(request.response);
+      if (request.status == 200) {
+          resolve(runId);
+      }
+      else {
+        console.log("server reageert niet zoals gehoopt");
+        console.log(request.response);
+        reject();
+      }
+    }
+    request.send();
+  })
 }
