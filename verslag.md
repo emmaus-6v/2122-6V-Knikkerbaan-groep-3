@@ -1,5 +1,5 @@
 # Verslag eindopdracht 6V
-### gemaakt door *--leerling1--*, *--leerling2--*, *etc*
+### gemaakt door *Valentijn van Winden*, *Gijs Arnold* en *Kevin Smit*
 
 ---
 
@@ -71,10 +71,13 @@ De knikkerbaan en de widget wisselen de volgende data met elkaar uit:
 - De instellingen (widget -> knikkerbaan)
 - De sensor data (knikkerbaan -> widget)
 
-We hebben dat op deze manier genormaliseerd in een database opgenomen (neem een strokendiagram op). De reden dat we voor ... kiezen is...
+We hebben dat op deze manier genormaliseerd in een database opgenomen:
+De datastructuur die in de standaardcode stond voldeed al redelijk goed aan onze eisen. Het enige wat we hebben veranderd, is de manier waarop de instellingen en sensor data worden opgeslagen. In de standaardcode werd dit gedaan in een kolom, maar wij vonden het makkelijker om die met een 'key value' systeem te doen. Dat houdt in dat de 'key' kolom de naam van de instelling / sensor bevat, en de 'value' kolom de waarde hiervan. Op deze manier kun je makkelijker nieuwe instellingen toevoegen. Dit hebben we ook moeten aanpassen in de server app.
 
 Uitdagingen die we tegenkwamen:
-
+- De grootste uitdaging die we tegenkwamen was het bouwen van de lift... Het ontwerpen / bouwen van het mechanische gedeelte hiervan kostte veel meer tijd dan wij hadden gehoopt.
+- Het aansturen van de lift was ook lastig. In eerste instantie hadden we twee 360 servo motors gemonteerd, die elkaar ondersteunden door het touwtje te 'duwen' en te trekken. Dit bleek echter moeilijk te programmeren, dus hebben we de onderste servo weggehaald en een gewichtje gebruikt om de lift naar beneden te krijgen. Dan kwamen we ook nog het probleem tegen om te bepalen wanneer de lift boven / beneden was aangekomen. In eerste instantie hebben we de 360 servo vervangen door een stepper motor, maar ook dit bleek niet handig aangezien de afstand die de stepper motor aflegde ook nog kon varieren en de motor bovendien heel langzaam ging. We hebben de 360 servo weer teruggemonteerd en bovendien een ultrasone afstandssensor gebruikt. Deze bepaalt of de lift beneden of boven is, en bleek nauwkeurig genoeg te zijn.
+- We ondervonden ook een probleem met de opvangbak, de knikkers vielen er in eerste instantie soms uit tijdens de vrije val. Dit heeft Kevin opgelost door van blik een wand te maken en een aantal kleine plankjes te monteren waardoor de knikker altijd goed terecht komt.
 
 ## Reflectie op opdracht
 #### --leerling1--
