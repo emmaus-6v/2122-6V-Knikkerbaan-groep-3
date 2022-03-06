@@ -1,6 +1,6 @@
 // wifi
-char WIFI_NETWERK[] = "HUIS";
-char WIFI_WACHTWOORD[] = "Aaug8pxAtyzu";
+char WIFI_NETWERK[] = "";
+char WIFI_WACHTWOORD[] = "";
 char SERVER_DOMEINNAAM[] = "3000-emmaus6v-21226vknikkerba-ppo2md968qk.ws-eu34.gitpod.io";    // domeinnaam van gitpod-server, zoals 3000-lavendel-bla-bla.gitpod.io
 
 // pins
