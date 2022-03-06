@@ -59,7 +59,7 @@ class WiFiCommunicator {
       printWiFiStatus();
     }
 
-    String stuurVerzoek(char const *pad, char const *data) {
+    String stuurVerzoek(char const *pad, String data) {
       Serial.print("doe verzoek op host:: ");
       Serial.print(host);
       Serial.print(", pad: ");

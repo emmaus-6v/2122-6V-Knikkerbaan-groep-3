@@ -23,7 +23,7 @@ class Teller {
     }
 
     void update() {
-      //Serial.println(digitalRead(pin));
+//      Serial.println(digitalRead(pin));
       if (wordtOnderbroken()) {
         if (millis() - laatstOnderbroken > DEBOUNCE_TIME) {
           verhoogAantal();
@@ -36,6 +36,10 @@ class Teller {
 
     void verhoogAantal() {
       aantal++;
+    }
+
+    void reset() {
+      aantal = 0;
     }
 
     int getAantal() {
