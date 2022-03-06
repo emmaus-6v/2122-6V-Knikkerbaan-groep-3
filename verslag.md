@@ -83,7 +83,8 @@ De datastructuur die in de standaardcode stond voldeed al redelijk goed aan onze
 #### Gijs
 *Het project is al met al redelijk soepeltjes verlopen. We hebben zowaar iets van een planning gemaakt en ons daar ook aan gehouden, wat al een wonder op zich is. Ik heb me vooral bezig gehouden met hardware, aangezien coderen niet echt mijn ding is. De taakverdeling was dus ook goed geregeld: iedereen deed dat waar die goed in is. Verder was de samenwerking ook in orde; we hebben ons aan onze onderlinge afspraken gehouden en gezamenlijke tussenuurtjes gebruikt om samen aan de lift te werken. Vond het een leuke opdracht, vanwege de combinatie hardware/software.*
 
-
+### Kevin
+*Ik vond de samenwerking goed gaan, de taakverdeling was goed verdeeld en zo hebben we onze opdracht heel netjes gekregen. Bovendien vond ik de opdracht leuk, vooral, omdat we niet alleen moesten programmeren, maar ook veel bij handvaardigheid zaten. Ik heb veel aan de hardware gedaan, maar ook samen met Valentijn stukjes van de code van de Arduino.*
 
 
 ## Slot
