@@ -23,7 +23,8 @@ CREATE TABLE instellingen (
    voeg hieronder dan INSERT regels to */
 -- INSERT INTO runs (stamp) VALUES (CURRENT_TIMESTAMP);
 -- INSERT INTO sensorData (run, stamp, key, value) VALUES (1, CURRENT_TIMESTAMP, 'aantal_knikkers', 3);
+INSERT INTO instellingen (key, value) VALUES ('snelheid_lift', 50); /* snelheid lift: waarde tussen de 25 en 100 */
 INSERT INTO instellingen (key, value) VALUES ('poort_open_tijd', 3);
 INSERT INTO instellingen (key, value) VALUES ('tijd_tot_knikkers_in_lift', 5);
 INSERT INTO instellingen (key, value) VALUES ('tijd_tot_knikkers_uit_lift', 5);
-INSERT INTO instellingen (key, value) VALUES ('snelheid_lift', 50); /* snelheid lift: waarde tussen de 25 en 100 */
+INSERT INTO instellingen (key, value) VALUES ('leds_helderheid', 100);

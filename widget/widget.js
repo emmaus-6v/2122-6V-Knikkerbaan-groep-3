@@ -9,13 +9,14 @@ var instellingenSliders = [
   new Slider(330, 50, 30, 100, 50, "#27d624", "Lift snelheid", "%", "snelheid_lift"),
   new Slider(330, 90, 2, 6, 3, "#fcba03", "Poort open tijd", "s", "poort_open_tijd"),
   new Slider(330, 130, 3, 10, 5, "#4187e0", "Tijd knikkers in lift", "s", "tijd_tot_knikkers_in_lift"),
-  new Slider(330, 170, 3, 10, 5, "#b76385", "Tijd knikkers uit lift", "s", "tijd_tot_knikkers_uit_lift")
+  new Slider(330, 170, 3, 10, 5, "#b76385", "Tijd knikkers uit lift", "s", "tijd_tot_knikkers_uit_lift"),
+  new Slider(330, 210, 0, 100, 100, "#f20d9f", "Leds helderheid", "%", "leds_helderheid")
 ];
 
 var statistieken = {
-  runId: new Statistiek("Huidige run", 200),
-  totaalAantalKnikkers: new Statistiek("Totaal aantal\nknikkers", 300),
-  vorigeRunAantalKnikkers: new Statistiek("Aantal knikkers\nvorige run", 400)
+  runId: new Statistiek("Huidige run", 240),
+  totaalAantalKnikkers: new Statistiek("Totaal aantal\nknikkers", 340),
+  vorigeRunAantalKnikkers: new Statistiek("Aantal knikkers\nvorige run", 440)
 }
 
 const tijdTotLiftOmhoogVolleSnelheid = 5000; // dit is een schatting, tijd die de lift erover doet om omhoog te komen op 100% snelheid
