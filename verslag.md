@@ -88,3 +88,4 @@ De datastructuur die in de standaardcode stond voldeed al redelijk goed aan onze
 
 
 ## Slot
+kanjers.
